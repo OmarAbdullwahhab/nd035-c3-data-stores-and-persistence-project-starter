@@ -1,9 +1,8 @@
 package com.udacity.jdnd.course3.critter.domain;
 
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.List;
 
 @Entity
 public class Customer {
@@ -17,6 +16,9 @@ public class Customer {
     private String phoneNumber;
 
     private String notes;
+
+    @OneToMany(mappedBy = "owner",fetch = FetchType.EAGER)
+    private List<Pet> pets;
 
     public long getId() {
         return id;
@@ -48,5 +50,13 @@ public class Customer {
 
     public void setNotes(String notes) {
         this.notes = notes;
+    }
+
+    public List<Pet> getPets() {
+        return pets;
+    }
+
+    public void setPets(List<Pet> pets) {
+        this.pets = pets;
     }
 }

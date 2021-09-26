@@ -2,10 +2,9 @@ package com.udacity.jdnd.course3.critter.domain;
 
 import com.udacity.jdnd.course3.critter.user.EmployeeSkill;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.time.DayOfWeek;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -17,8 +16,16 @@ public class Employee {
 
     private String name;
 
+    @ElementCollection(targetClass = EmployeeSkill.class)
+    @JoinTable(name = "empl_skills", joinColumns = @JoinColumn(name = "empl_id"))
+    @Column(name = "skills", nullable = false)
+    @Enumerated(EnumType.STRING)
     private Set<EmployeeSkill> skills;
 
+    @ElementCollection(targetClass = DayOfWeek.class)
+    @JoinTable(name = "empl_available_days", joinColumns = @JoinColumn(name = "empl_id"))
+    @Column(name = "days_available", nullable = false)
+    @Enumerated(EnumType.STRING)
     private Set<DayOfWeek> daysAvailable;
 
     public long getId() {
@@ -51,5 +58,18 @@ public class Employee {
 
     public void setDaysAvailable(Set<DayOfWeek> daysAvailable) {
         this.daysAvailable = daysAvailable;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Employee employee = (Employee) o;
+        return id == employee.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }

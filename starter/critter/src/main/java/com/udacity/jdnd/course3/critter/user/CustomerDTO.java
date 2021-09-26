@@ -1,6 +1,10 @@
 package com.udacity.jdnd.course3.critter.user;
 
+import com.udacity.jdnd.course3.critter.domain.Customer;
+import com.udacity.jdnd.course3.critter.domain.Pet;
+
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Represents the form that customer request and response data takes. Does not map
@@ -52,4 +56,36 @@ public class CustomerDTO {
     public void setPetIds(List<Long> petIds) {
         this.petIds = petIds;
     }
+
+    public void fromCustomer(Customer c)
+    {
+        this.id = c.getId();
+        this.name = c.getName();
+        this.phoneNumber = c.getPhoneNumber();
+        this.notes = c.getNotes();
+        if(c.getPets() != null) {
+
+            this.petIds = c.getPets().stream().map(x -> x.getId()).collect(Collectors.toList());
+        }
+
+    }
+
+    public void toCustomer(Customer c)
+    {
+
+        c.setId(this.id);
+        c.setName(this.name);
+        c.setNotes(this.notes);
+        c.setPhoneNumber(this.phoneNumber);
+        if(this.petIds !=null) {
+            List<Pet> pets = this.petIds.stream().map(x -> {
+                Pet p = new Pet();
+                p.setId(x);
+                return p;
+            }).collect(Collectors.toList());
+
+            c.setPets(pets);
+        }
+    }
+
 }

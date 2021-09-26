@@ -1,6 +1,8 @@
 package com.udacity.jdnd.course3.critter.domain;
 
 import com.udacity.jdnd.course3.critter.user.EmployeeSkill;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -14,11 +16,13 @@ public class Schedule {
     @GeneratedValue
     private long id;
 
-    @ManyToMany
+
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name="employee_schedules",
     joinColumns = @JoinColumn(name="schedule_id"),
     inverseJoinColumns = @JoinColumn(name="employee_id"))
     private List<Employee> employees;
+
 
     @ManyToMany
     @JoinTable(name="pets_schedules",
@@ -28,6 +32,10 @@ public class Schedule {
 
     private LocalDate date;
 
+    @ElementCollection(targetClass = EmployeeSkill.class)
+    @JoinTable(name = "sched_skills", joinColumns = @JoinColumn(name = "sched_id"))
+    @Column(name = "activities", nullable = false)
+    @Enumerated(EnumType.STRING)
     private Set<EmployeeSkill> activities;
 
     public long getId() {

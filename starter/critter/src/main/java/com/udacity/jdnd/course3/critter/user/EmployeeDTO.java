@@ -1,5 +1,7 @@
 package com.udacity.jdnd.course3.critter.user;
 
+import com.udacity.jdnd.course3.critter.domain.Employee;
+
 import java.time.DayOfWeek;
 import java.util.Set;
 
@@ -8,6 +10,7 @@ import java.util.Set;
  * to the database directly.
  */
 public class EmployeeDTO {
+
     private long id;
     private String name;
     private Set<EmployeeSkill> skills;
@@ -43,5 +46,21 @@ public class EmployeeDTO {
 
     public void setDaysAvailable(Set<DayOfWeek> daysAvailable) {
         this.daysAvailable = daysAvailable;
+    }
+
+    public void fromEmployee(Employee employee)
+    {
+        this.id = employee.getId();
+        this.name = employee.getName();
+        this.skills = employee.getSkills();
+        this.daysAvailable = employee.getDaysAvailable();
+    }
+
+    public void toEmployee(Employee employee)
+    {
+        employee.setId(this.id);
+        employee.setName(this.name);
+        employee.setDaysAvailable(this.daysAvailable);
+        employee.setSkills(this.skills);
     }
 }
